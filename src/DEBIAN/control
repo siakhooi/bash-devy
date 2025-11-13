@@ -1,0 +1,7 @@
+Package: siakhooi-devy
+Version: 0.1.0
+Maintainer: Siak Hooi <siakhooi@gmail.com>
+Depends: coreutils, siakhooi-devutils, bash
+Architecture: amd64
+Homepage: <https://github.com/siakhooi/bash-devy>
+Description: dev scripts for devcontainers/wsl
