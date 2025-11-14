@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.1.0
+Version:        0.2.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -22,7 +22,11 @@ dev scripts for devcontainers/wsl
 %files
 %license LICENSE
 %{_bindir}/git-get
+%{_bindir}/apt-search
 
 %changelog
+* Fri Nov 14 2025 Siak Hooi <siakhooi@gmail.com> - 0.2.0
+- add apt-search
+
 * Thu Nov 13 2025 Siak Hooi <siakhooi@gmail.com> - 0.1.0
 - initial version

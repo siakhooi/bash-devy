@@ -1,0 +1,42 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $(basename "$0") [-h] [-n package_name] [-b path_to_binary]"
+}
+action=
+while getopts "hn:b:" arg; do
+  case $arg in
+  h)
+    usage
+    exit 0
+    ;;
+  n)
+    action=name
+    package_name="$OPTARG"
+    ;;
+  b)
+    action=binary
+    binary_path="$OPTARG"
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 0 ]]; then
+  usage
+  exit 0
+fi
+
+if [[ -z $action ]]; then
+  usage
+  exit 0
+fi
+
+if [[ $action == name ]]; then
+  apt-cache search "$package_name"
+elif [[ $action == binary ]]; then
+  dpkg -S "$binary_path"
+fi

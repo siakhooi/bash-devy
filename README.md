@@ -17,6 +17,7 @@ sudo yum install siakhooi-devy
 
 ## Binaries
 - `git-get`
+- `apt-search`
 
 ## External Third party Required
 - `git`
