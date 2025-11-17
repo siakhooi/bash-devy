@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.2.0
+Version:        0.2.1
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -8,7 +8,7 @@ URL:            https://github.com/siakhooi/bash-devy
 Source0:        https://github.com/siakhooi/%{name}/archive/refs/tags/${version}.tar.gz
 BuildArch:      noarch
 
-Requires:       bash, siakhooi-devutils
+Requires:       bash
 
 %description
 dev scripts for devcontainers/wsl
@@ -25,6 +25,9 @@ dev scripts for devcontainers/wsl
 %{_bindir}/apt-search
 
 %changelog
+* Mon Nov 17 2025 Siak Hooi <siakhooi@gmail.com> - 0.2.1
+- remove siakhooi-devutils
+
 * Fri Nov 14 2025 Siak Hooi <siakhooi@gmail.com> - 0.2.0
 - add apt-search
 
