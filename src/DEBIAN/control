@@ -1,5 +1,5 @@
 Package: siakhooi-devy
-Version: 0.2.1
+Version: 0.3.0
 Maintainer: Siak Hooi <siakhooi@gmail.com>
 Depends: coreutils, bash
 Architecture: amd64

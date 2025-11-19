@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.2.1
+Version:        0.3.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -22,9 +22,13 @@ dev scripts for devcontainers/wsl
 %files
 %license LICENSE
 %{_bindir}/git-get
+%{_bindir}/git-log
 %{_bindir}/apt-search
 
 %changelog
+* Wed Nov 19 2025 Siak Hooi <siakhooi@gmail.com> - 0.3.0
+- add git-log
+
 * Mon Nov 17 2025 Siak Hooi <siakhooi@gmail.com> - 0.2.1
 - remove siakhooi-devutils
 

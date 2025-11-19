@@ -1,0 +1,33 @@
+#!/bin/bash
+
+options=()
+usage() {
+  echo "Usage: $(basename "$0") [-h] [-s YYYY-MM-DD] [-1]"
+  echo "  -s YYYY-MM-DD   since YYYY-MM-DD"
+}
+while getopts "hs:1" arg; do
+  case $arg in
+  h)
+    usage
+    exit 0
+    ;;
+  s)
+    options+=(--since="$OPTARG")
+    ;;
+  1)
+    options+=(--graph --abbrev-commit --decorate --all --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)%an%C(reset)%C(auto)%d%C(reset)')
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+  esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 0 ]]; then
+  usage
+  exit 0
+fi
+
+set -x
+git log "${options[@]}" "$@"
