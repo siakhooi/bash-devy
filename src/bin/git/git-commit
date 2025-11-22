@@ -1,0 +1,84 @@
+#!/bin/bash
+
+usage() {
+  echo "Usage: $(basename "$0") [-h] [-a] [-n] [-e] [-r]"
+  echo "     : do git commit with message from git-commit.yaml"
+  echo " -a  : do git commit --amend"
+  echo " -n  : do git commit --amend --no-edit"
+  echo " -e  : edit git-commit.yaml"
+  echo " -r  : git push for review"
+}
+action=commit
+message=Y
+options=()
+while getopts "heran" arg; do
+  case $arg in
+    h)
+      usage
+      exit 0
+    ;;
+    e)
+      action=edit
+    ;;
+    r)
+      action=review
+    ;;
+    a)
+      options+=(--amend)
+    ;;
+    n)
+      message=N
+      options+=(--amend --no-edit)
+    ;;
+    *)
+      usage
+      exit 1
+    ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+readonly config1=./.git-commit.yaml
+readonly config2=../.git-commit.yaml
+
+git_commit_config=$config1
+if [[ ! -f "$config1" ]] && [[ -f "$config2" ]]; then
+  git_commit_config=$config2
+fi
+
+if [[ "$action" == "edit" ]]; then
+  if [[ ! -f "$git_commit_config" ]]; then
+    echo "message: <message>" > "$git_commit_config"
+  fi
+  $EDITOR "$git_commit_config"
+  exit $?
+fi
+
+if [[ $action == "commit" ]]; then
+  set -e
+  if [[ $message == "Y" ]]; then
+    if [[ ! -f "$git_commit_config" ]]; then
+      echo.error "config file $git_commit_config not found"
+      exit 1
+    fi
+    message=$(yq .message "$git_commit_config")
+    if [[ -z $message ]]; then
+      echo.error "message not found in $git_commit_config"
+      exit 2
+    fi
+    options+=(-m "$message")
+  fi
+  (
+    set -x
+    git commit "${options[@]}"
+  )
+fi
+
+if [[ $action == "review" ]]; then
+  set -e
+  git_branch=$(git-get -b)
+  (
+    set -x
+    git push origin "HEAD:refs/for/$git_branch"
+  )
+fi

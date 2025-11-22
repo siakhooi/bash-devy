@@ -21,13 +21,14 @@ dev scripts for devcontainers/wsl
 
 %files
 %license LICENSE
+%{_bindir}/git-commit
 %{_bindir}/git-get
 %{_bindir}/git-log
 %{_bindir}/apt-search
 
 %changelog
 * Sat Nov 22 2025 Siak Hooi <siakhooi@gmail.com> - 0.4.0
-- add git-log -l
+- add git-log -l, git-commit
 
 * Wed Nov 19 2025 Siak Hooi <siakhooi@gmail.com> - 0.3.0
 - add git-log
