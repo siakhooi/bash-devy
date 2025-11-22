@@ -2,10 +2,12 @@
 
 options=()
 usage() {
-  echo "Usage: $(basename "$0") [-h] [-s YYYY-MM-DD] [-1]"
+  echo "Usage: $(basename "$0") [-h] [-s YYYY-MM-DD] [-1] [-l]"
   echo "  -s YYYY-MM-DD   since YYYY-MM-DD"
+  echo "  -1              : --graph --abbrev-commit --decorate --all with formatting"
+  echo "  -l              : --graph --decorate --oneline --all"
 }
-while getopts "hs:1" arg; do
+while getopts "hs:1l" arg; do
   case $arg in
   h)
     usage
@@ -16,6 +18,9 @@ while getopts "hs:1" arg; do
     ;;
   1)
     options+=(--graph --abbrev-commit --decorate --all --format=format:'%C(bold blue)%h%C(reset) %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)%an%C(reset)%C(auto)%d%C(reset)')
+    ;;
+  l)
+    options+=(--graph --decorate --oneline --all)
     ;;
   *)
     usage
