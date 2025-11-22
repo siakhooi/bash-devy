@@ -24,11 +24,12 @@ dev scripts for devcontainers/wsl
 %{_bindir}/git-commit
 %{_bindir}/git-get
 %{_bindir}/git-log
+%{_bindir}/git-reset
 %{_bindir}/apt-search
 
 %changelog
 * Sat Nov 22 2025 Siak Hooi <siakhooi@gmail.com> - 0.4.0
-- add git-log -l, git-commit
+- add git-log -l, git-commit, git-reset
 
 * Wed Nov 19 2025 Siak Hooi <siakhooi@gmail.com> - 0.3.0
 - add git-log

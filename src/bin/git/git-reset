@@ -1,0 +1,60 @@
+#!/bin/bash
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-x] [-c] [-s]"
+	echo " -x  : aka git nah"
+	echo " -c  : uncommit last commit"
+  echo " -s  : unstaged"
+}
+while getopts "hxcs" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	x)
+		action=x
+		;;
+	c)
+		action=c
+		;;
+	s)
+		action=s
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+
+if [[ -z $action ]]; then
+	echo.error "no options selected"
+	usage
+	exit 1
+fi
+
+if [[ "$action" == "x" ]]; then
+	(
+		set -x
+		git reset --hard
+		git clean -df
+	)
+	if [ -d ".git/rebase-apply" ] || [ -d ".git/rebase-merge" ]; then
+		(
+			set -x
+			git rebase --abort
+		)
+	fi
+elif [[ "$action" == "c" ]]; then
+	(
+		set -x
+		git reset --soft HEAD~1
+	)
+elif [[ "$action" == "s" ]]; then
+	(
+		set -x
+		git reset
+	)
+fi
