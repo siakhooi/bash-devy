@@ -1,0 +1,55 @@
+#!/bin/bash
+
+readonly build_number_file=.build-number
+readonly build_version_file=.build-version
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-n] [-s]"
+	echo "Options:"
+	echo " -h          Show this help message"
+	echo " -n          Get build number, and exit"
+	echo " -s          get snapshot build version"
+}
+
+get_build_number() {
+	if [[ -f $build_number_file ]]; then
+		cat "$build_number_file"
+	else
+		build_number=$(date "+%d%H%M")
+		printf "%s" "$build_number" | tee "$build_number_file"
+	fi
+}
+
+snapshot=
+while getopts "hns" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	n)
+		get_build_number
+		exit 0
+		;;
+	s)
+		snapshot="-SNAPSHOT"
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 0 ]]; then
+	usage
+	exit 0
+fi
+
+if [[ -f $build_version_file ]]; then
+	cat "$build_version_file"
+else
+	build_number=$(get_build_number)
+	y2m=$(date "+%y.%-m")
+	printf "%s.%s%s" "$y2m" "$build_number" "$snapshot" | tee "$build_version_file"
+fi

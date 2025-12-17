@@ -21,13 +21,17 @@ dev scripts for devcontainers/wsl
 
 %files
 %license LICENSE
+%{_bindir}/apt-search
+%{_bindir}/get-build-version
 %{_bindir}/git-commit
 %{_bindir}/git-get
 %{_bindir}/git-log
 %{_bindir}/git-reset
-%{_bindir}/apt-search
 
 %changelog
+* Wed Dec 17 2025 Siak Hooi <siakhooi@gmail.com> - 0.5.0
+- add get-build-version
+
 * Sat Nov 22 2025 Siak Hooi <siakhooi@gmail.com> - 0.4.0
 - add git-log -l, git-commit, git-reset
 
