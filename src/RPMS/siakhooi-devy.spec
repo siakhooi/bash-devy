@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.4.0
+Version:        0.6.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -27,8 +27,12 @@ dev scripts for devcontainers/wsl
 %{_bindir}/git-get
 %{_bindir}/git-log
 %{_bindir}/git-reset
+%{_bindir}/mvn-with-settings
 
 %changelog
+* Wed Dec 17 2025 Siak Hooi <siakhooi@gmail.com> - 0.6.0
+- add mvn-with-settings
+
 * Wed Dec 17 2025 Siak Hooi <siakhooi@gmail.com> - 0.5.0
 - add get-build-version
 
