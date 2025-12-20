@@ -1,0 +1,133 @@
+#!/bin/bash
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-t] [-d] [-p] [-a] [-A] [-r] [-R] [-o] [-l] [-U] [-n] [tag]"
+	echo "  -a    Generate dependency:analyze report"
+	echo "  -l    Generate dependency:list report"
+	echo "  -t    Generate dependency:tree report"
+	echo "  -d    Generate versions:display-dependency-updates report"
+	echo "  -p    Generate versions:display-plugin-updates report"
+	echo "  -A    Generate all reports, equivalent to -t -d -p -a -l"
+	echo "  -r    Execute dependency:resolve"
+	echo "  -R    Execute dependency:resolve-plugins"
+	echo "  -o    Execute dependency:go-offline, equivalent to -r -R"
+	echo "  -U    Execute versions:update-properties"
+	echo "  -n    no major updates (applies to -d, -p, -U)"
+	echo "  -h    Show this help message"
+}
+action=()
+no_major_updates=false
+while getopts "htdpaAlnrRUo" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	t)
+		action+=(tree)
+		;;
+	d)
+		action+=(dependency)
+		;;
+	p)
+		action+=(plugin)
+		;;
+	a)
+		action+=(analyze)
+		;;
+	l)
+		action+=(list)
+		;;
+	A)
+		action+=(tree dependency plugin analyze list)
+		;;
+	r)
+		action+=(resolve)
+		;;
+	R)
+		action+=(resolve-plugins)
+		;;
+	U)
+		action+=(update)
+		;;
+	o)
+		action+=(offline)
+		;;
+	n)
+		no_major_updates=true
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+if [[ $# -gt 1 ]]; then
+	usage
+	exit 0
+fi
+
+tag=
+scanId=$(y2s)
+
+if [[ $# -eq 1 ]]; then
+	tag="-$1"
+fi
+
+if [[ ${#action[@]} -eq 0 ]]; then
+	usage
+	exit 0
+fi
+options=()
+
+if [[ " ${action[*]} " =~ " list " ]]; then
+	mvn-with-settings "${options[@]}" dependency:list 2>&1 | tee "mvn-${scanId}-dl${tag}.txt"
+fi
+if [[ " ${action[*]} " =~ " tree " ]]; then
+	mvn-with-settings "${options[@]}" dependency:tree 2>&1 | tee "mvn-${scanId}-dt${tag}.txt"
+fi
+if [[ " ${action[*]} " =~ " dependency " ]]; then
+	(
+		if $no_major_updates; then
+			# shellcheck disable=SC2031
+			# shellcheck disable=SC2030
+			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
+      echo "MAVEN_OPTS set to: $MAVEN_OPTS"
+		fi
+		mvn-with-settings "${options[@]}" versions:display-dependency-updates 2>&1 | tee "mvn-${scanId}-dv${tag}.txt"
+	)
+fi
+if [[ " ${action[*]} " =~ " plugin " ]]; then
+	(
+		if $no_major_updates; then
+			# shellcheck disable=SC2031
+			# shellcheck disable=SC2030
+			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
+      echo "MAVEN_OPTS set to: $MAVEN_OPTS"
+		fi
+		mvn-with-settings "${options[@]}" versions:display-plugin-updates 2>&1 | tee "mvn-${scanId}-pv${tag}.txt"
+	)
+fi
+if [[ " ${action[*]} " =~ " analyze " ]]; then
+	mvn-with-settings "${options[@]}" dependency:analyze 2>&1 | tee "mvn-${scanId}-da${tag}.txt"
+fi
+if [[ " ${action[*]} " =~ " resolve " ]]; then
+	mvn-with-settings "${options[@]}" dependency:resolve 2>&1 | tee "mvn-${scanId}-dr${tag}.txt"
+fi
+if [[ " ${action[*]} " =~ " resolve-plugins " ]]; then
+	mvn-with-settings "${options[@]}" dependency:resolve-plugins 2>&1 | tee "mvn-${scanId}-dpr${tag}.txt"
+fi
+if [[ " ${action[*]} " =~ " offline " ]]; then
+	mvn-with-settings "${options[@]}" dependency:go-offline 2>&1 | tee "mvn-${scanId}-do${tag}.txt"
+fi
+if [[ " ${action[*]} " =~ " update " ]]; then
+	(
+		if $no_major_updates; then
+			# shellcheck disable=SC2031
+			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
+      echo "MAVEN_OPTS set to: $MAVEN_OPTS"
+		fi
+		mvn-with-settings "${options[@]}" versions:update-properties 2>&1 | tee "mvn-${scanId}-du${tag}.txt"
+	)
+fi
