@@ -80,12 +80,13 @@ if [[ ${#action[@]} -eq 0 ]]; then
 	exit 0
 fi
 options=()
+readonly output_prefix=mvn-deps-
 
 if [[ " ${action[*]} " =~ " list " ]]; then
-	mvn-with-settings "${options[@]}" dependency:list 2>&1 | tee "mvn-${scanId}-dl${tag}.txt"
+	mvn-with-settings "${options[@]}" dependency:list 2>&1 | tee "${output_prefix}${scanId}-dl${tag}.txt"
 fi
 if [[ " ${action[*]} " =~ " tree " ]]; then
-	mvn-with-settings "${options[@]}" dependency:tree 2>&1 | tee "mvn-${scanId}-dt${tag}.txt"
+	mvn-with-settings "${options[@]}" dependency:tree 2>&1 | tee "${output_prefix}${scanId}-dt${tag}.txt"
 fi
 if [[ " ${action[*]} " =~ " dependency " ]]; then
 	(
@@ -95,7 +96,7 @@ if [[ " ${action[*]} " =~ " dependency " ]]; then
 			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
       echo "MAVEN_OPTS set to: $MAVEN_OPTS"
 		fi
-		mvn-with-settings "${options[@]}" versions:display-dependency-updates 2>&1 | tee "mvn-${scanId}-dv${tag}.txt"
+		mvn-with-settings "${options[@]}" versions:display-dependency-updates 2>&1 | tee "${output_prefix}${scanId}-dv${tag}.txt"
 	)
 fi
 if [[ " ${action[*]} " =~ " plugin " ]]; then
@@ -106,20 +107,20 @@ if [[ " ${action[*]} " =~ " plugin " ]]; then
 			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
       echo "MAVEN_OPTS set to: $MAVEN_OPTS"
 		fi
-		mvn-with-settings "${options[@]}" versions:display-plugin-updates 2>&1 | tee "mvn-${scanId}-pv${tag}.txt"
+		mvn-with-settings "${options[@]}" versions:display-plugin-updates 2>&1 | tee "${output_prefix}${scanId}-pv${tag}.txt"
 	)
 fi
 if [[ " ${action[*]} " =~ " analyze " ]]; then
-	mvn-with-settings "${options[@]}" dependency:analyze 2>&1 | tee "mvn-${scanId}-da${tag}.txt"
+	mvn-with-settings "${options[@]}" dependency:analyze 2>&1 | tee "${output_prefix}${scanId}-da${tag}.txt"
 fi
 if [[ " ${action[*]} " =~ " resolve " ]]; then
-	mvn-with-settings "${options[@]}" dependency:resolve 2>&1 | tee "mvn-${scanId}-dr${tag}.txt"
+	mvn-with-settings "${options[@]}" dependency:resolve 2>&1 | tee "${output_prefix}${scanId}-dr${tag}.txt"
 fi
 if [[ " ${action[*]} " =~ " resolve-plugins " ]]; then
-	mvn-with-settings "${options[@]}" dependency:resolve-plugins 2>&1 | tee "mvn-${scanId}-dpr${tag}.txt"
+	mvn-with-settings "${options[@]}" dependency:resolve-plugins 2>&1 | tee "${output_prefix}${scanId}-dpr${tag}.txt"
 fi
 if [[ " ${action[*]} " =~ " offline " ]]; then
-	mvn-with-settings "${options[@]}" dependency:go-offline 2>&1 | tee "mvn-${scanId}-do${tag}.txt"
+	mvn-with-settings "${options[@]}" dependency:go-offline 2>&1 | tee "${output_prefix}${scanId}-do${tag}.txt"
 fi
 if [[ " ${action[*]} " =~ " update " ]]; then
 	(
@@ -128,6 +129,6 @@ if [[ " ${action[*]} " =~ " update " ]]; then
 			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
       echo "MAVEN_OPTS set to: $MAVEN_OPTS"
 		fi
-		mvn-with-settings "${options[@]}" versions:update-properties 2>&1 | tee "mvn-${scanId}-du${tag}.txt"
+		mvn-with-settings "${options[@]}" versions:update-properties 2>&1 | tee "${output_prefix}${scanId}-du${tag}.txt"
 	)
 fi
