@@ -93,7 +93,7 @@ if [[ " ${action[*]} " =~ " dependency " ]]; then
 		if $no_major_updates; then
 			# shellcheck disable=SC2031
 			# shellcheck disable=SC2030
-			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
+			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore=(?i).*-(alpha|beta|m|M|rc)(-?\d+)?"
       echo "MAVEN_OPTS set to: $MAVEN_OPTS"
 		fi
 		mvn-with-settings "${options[@]}" versions:display-dependency-updates 2>&1 | tee "${output_prefix}${scanId}-dv${tag}.txt"
@@ -104,7 +104,7 @@ if [[ " ${action[*]} " =~ " plugin " ]]; then
 		if $no_major_updates; then
 			# shellcheck disable=SC2031
 			# shellcheck disable=SC2030
-			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
+			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore=(?i).*-(alpha|beta|m|M|rc)(-?\d+)?"
       echo "MAVEN_OPTS set to: $MAVEN_OPTS"
 		fi
 		mvn-with-settings "${options[@]}" versions:display-plugin-updates 2>&1 | tee "${output_prefix}${scanId}-pv${tag}.txt"
@@ -126,7 +126,7 @@ if [[ " ${action[*]} " =~ " update " ]]; then
 	(
 		if $no_major_updates; then
 			# shellcheck disable=SC2031
-			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore='(?i).*-(alpha|beta|m|M|rc)(-?\d+)?'"
+			export MAVEN_OPTS="${MAVEN_OPTS} -Dmaven.version.ignore=(?i).*-(alpha|beta|m|M|rc)(-?\d+)?"
       echo "MAVEN_OPTS set to: $MAVEN_OPTS"
 		fi
 		mvn-with-settings "${options[@]}" versions:update-properties 2>&1 | tee "${output_prefix}${scanId}-du${tag}.txt"

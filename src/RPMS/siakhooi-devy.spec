@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.7.1
+Version:        0.7.2
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -31,6 +31,9 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Wed Dec 31 2025 Siak Hooi <siakhooi@gmail.com> - 0.7.2
+- fix mvn-deps script to ignore pre-release versions correctly
+
 * Wed Dec 31 2025 Siak Hooi <siakhooi@gmail.com> - 0.7.1
 - rename output-prefix for mvn-deps
 
