@@ -24,6 +24,7 @@ sudo yum install siakhooi-devy
 
 - `apt-search`
 - `get-build-version`
+- `devy-check-binaries`
 - `git-commit`
 - `git-get`
 - `git-log`

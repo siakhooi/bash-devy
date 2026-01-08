@@ -9,6 +9,7 @@ Source0:        https://github.com/siakhooi/%{name}/archive/refs/tags/${version}
 BuildArch:      noarch
 
 Requires:       bash
+Requires:       siakhooi-devutils
 
 %description
 dev scripts for devcontainers/wsl
@@ -23,6 +24,7 @@ dev scripts for devcontainers/wsl
 %license LICENSE
 %{_bindir}/apt-search
 %{_bindir}/get-build-version
+%{_bindir}/devy-check-binaries
 %{_bindir}/git-commit
 %{_bindir}/git-get
 %{_bindir}/git-log
@@ -31,6 +33,9 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Thu Jan 8 2026 Siak Hooi <siakhooi@gmail.com> - 0.8.0
+- add devy-check-binaries
+
 * Wed Dec 31 2025 Siak Hooi <siakhooi@gmail.com> - 0.7.2
 - fix mvn-deps script to ignore pre-release versions correctly
 

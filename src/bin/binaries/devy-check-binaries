@@ -1,0 +1,51 @@
+#!/bin/bash
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-f binary-list-file] binary..."
+}
+binaries=()
+while getopts "hf:" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	f)
+		if [[ ! -f $OPTARG ]]; then
+			echo.error "File not found: $OPTARG"
+		fi
+		mapfile -t temp_array <"$OPTARG"
+		binaries+=("${temp_array[@]}")
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+binaries+=("$@")
+
+if [[ ${#binaries[@]} -eq 0 ]]; then
+	usage
+	exit 0
+fi
+
+found=()
+not_found=()
+
+for bin in "${binaries[@]}"; do
+	if command -v "$bin" >/dev/null 2>&1; then
+		found+=("$bin")
+	else
+		not_found+=("$bin")
+	fi
+done
+
+# sort
+mapfile -t found < <(printf "%s\n" "${found[@]}" | sort)
+mapfile -t not_found < <(printf "%s\n" "${not_found[@]}" | sort)
+
+echo -n "Binaries check: "
+echo.green -n "${found[@]}"
+echo.red "${not_found[@]}"
