@@ -45,11 +45,11 @@ not_found=()
 for bin in "${binaries[@]}"; do
 	if command -v "$bin" >/dev/null 2>&1; then
 		if $show_version && [[ "$bin" == "jq" ]]; then
-			version=$("$bin" --version | cut -d'=' -f2)
-			found+=("$bin=($version)")
+			version=$("$bin" --version | cut -d'-' -f2)
+			found+=("$bin=$version")
 		elif $show_version && [[ "$bin" == "yq" ]]; then
 			version=$("$bin" --version | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+')
-			found+=("$bin=($version)")
+			found+=("$bin=W$version")
 		else
 			found+=("$bin")
 		fi
@@ -63,5 +63,6 @@ mapfile -t found < <(printf "%s\n" "${found[@]}" | sort)
 mapfile -t not_found < <(printf "%s\n" "${not_found[@]}" | sort)
 
 echo -n "Binaries check: "
-echo.green -n "${found[@]}" ' '
+echo.green -n "${found[@]}"
+echo -n ' '
 echo.red "${not_found[@]}"
