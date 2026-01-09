@@ -1,10 +1,15 @@
 #!/bin/bash
 
 usage() {
-	echo "Usage: $(basename "$0") [-h] [-f binary-list-file] binary..."
+	echo "Usage: $(basename "$0") [-h] [-V] [-f binary-list-file] binary..."
+	echo "  -h                      Show this help message and exit"
+	echo "  -V                      show binary version whenever possible"
+	echo "  -f binary-list-file     Specify a file containing a list of binaries to check (one per line)"
+	echo "  binary...               List of binaries to check"
 }
 binaries=()
-while getopts "hf:" arg; do
+show_version=false
+while getopts "hVf:" arg; do
 	case $arg in
 	h)
 		usage
@@ -16,6 +21,9 @@ while getopts "hf:" arg; do
 		fi
 		mapfile -t temp_array <"$OPTARG"
 		binaries+=("${temp_array[@]}")
+		;;
+	V)
+		show_version=true
 		;;
 	*)
 		usage
@@ -36,7 +44,15 @@ not_found=()
 
 for bin in "${binaries[@]}"; do
 	if command -v "$bin" >/dev/null 2>&1; then
-		found+=("$bin")
+		if $show_version && [[ "$bin" == "jq" ]]; then
+			version=$("$bin" --version | cut -d'=' -f2)
+			found+=("$bin=($version)")
+		elif $show_version && [[ "$bin" == "yq" ]]; then
+			version=$("$bin" --version | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+')
+			found+=("$bin=($version)")
+		else
+			found+=("$bin")
+		fi
 	else
 		not_found+=("$bin")
 	fi
