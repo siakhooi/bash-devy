@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.10.0
+Version:        0.11.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -33,6 +33,9 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Sat Jan 10 2026 Siak Hooi <siakhooi@gmail.com> - 0.11.0
+- update devy-check-binaries with firebase, groovy version checks
+
 * Sat Jan 10 2026 Siak Hooi <siakhooi@gmail.com> - 0.10.0
 - update devy-check-binaries with node, npm, yarn version checks
 

@@ -50,8 +50,11 @@ for bin in "${binaries[@]}"; do
 		elif $show_version && [[ "$bin" == "yq" ]]; then
 			version=$("$bin" --version | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+')
 			found+=("$bin=$version")
-		elif $show_version && [[ "$bin" == "npm" || "$bin" == "yarn" ]]; then
+		elif $show_version && [[ "$bin" == "npm" || "$bin" == "yarn" || "$bin" == "firebase" ]]; then
 			version=$("$bin" --version)
+			found+=("$bin=$version")
+		elif $show_version && [[ "$bin" == "groovy" ]]; then
+			version=$("$bin" --version | awk '/Groovy Version:/ {print $3}')
 			found+=("$bin=$version")
 		elif $show_version && [[ "$bin" == "node" ]]; then # remove Leading 'v'
 			version=$("$bin" --version | cut -c2-)
