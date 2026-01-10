@@ -10,7 +10,7 @@ build-rpm: clean shellcheck
 set-version:
 	scripts/set-version.sh
 commit:
-	scripts/git-commit-and-push.sh
+	scripts/git-commit.sh
 release:
 	scripts/create-release.sh
 all-deb: clean set-version build-deb
