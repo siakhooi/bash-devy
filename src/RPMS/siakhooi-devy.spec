@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.9.1
+Version:        0.9.2
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -33,6 +33,9 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Sat Jan 10 2026 Siak Hooi <siakhooi@gmail.com> - 0.9.2
+- touch up devy-check-binaries
+
 * Fri Jan 9 2026 Siak Hooi <siakhooi@gmail.com> - 0.9.1
 - fix devy-check-binaries
 

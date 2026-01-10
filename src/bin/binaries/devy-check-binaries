@@ -62,7 +62,8 @@ done
 mapfile -t found < <(printf "%s\n" "${found[@]}" | sort)
 mapfile -t not_found < <(printf "%s\n" "${not_found[@]}" | sort)
 
-echo -n "Binaries check: "
-echo.green -n "${found[@]}"
-echo -n ' '
-echo.red "${not_found[@]}"
+[[ ${#found[@]} -gt 0 ]] && echo.green -n "${found[@]}"
+[[ ${#found[@]} -gt 0 && ${#not_found[@]} -gt 0 ]] && echo -n ' '
+[[ ${#not_found[@]} -gt 0 ]] && echo.red "${not_found[@]}"
+
+exit $((${#not_found[@]} > 0))
