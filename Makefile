@@ -24,3 +24,9 @@ rpm-install:
 	rpm -i ./*.rpm
 rpm-uninstall:
 	rpm -e siakhooi-devy
+
+docker-build-rpm:
+	docker run --rm -v $$(pwd):/workspace siakhooi/devcontainer:bash-rpm-0.1.0 scripts/build-rpms.sh
+docker-build-deb:
+	docker run --rm -v $$(pwd):/workspace siakhooi/devcontainer:bash-deb-0.1.0 scripts/build-deb.sh
+all: clean set-version docker-build-deb docker-build-rpm
