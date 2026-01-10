@@ -49,7 +49,13 @@ for bin in "${binaries[@]}"; do
 			found+=("$bin=$version")
 		elif $show_version && [[ "$bin" == "yq" ]]; then
 			version=$("$bin" --version | grep -oP 'v\K[0-9]+\.[0-9]+\.[0-9]+')
-			found+=("$bin=W$version")
+			found+=("$bin=$version")
+		elif $show_version && [[ "$bin" == "npm" || "$bin" == "yarn" ]]; then
+			version=$("$bin" --version)
+			found+=("$bin=$version")
+		elif $show_version && [[ "$bin" == "node" ]]; then # remove Leading 'v'
+			version=$("$bin" --version | cut -c2-)
+			found+=("$bin=$version")
 		else
 			found+=("$bin")
 		fi
