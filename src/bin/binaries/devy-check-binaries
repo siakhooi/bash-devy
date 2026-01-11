@@ -56,7 +56,7 @@ for bin in "${binaries[@]}"; do
 		elif $show_version && [[ "$bin" == "groovy" ]]; then
 			version=$("$bin" --version | awk '/Groovy Version:/ {print $3}')
 			found+=("$bin=$version")
-		elif $show_version && [[ "$bin" == "git" ]]; then # third word
+		elif $show_version && [[ "$bin" == "git" || "$bin" == "podman" ]]; then # third word
 			version=$("$bin" --version | cut -d' ' -f3)
 			found+=("$bin=$version")
 		elif $show_version && [[ "$bin" == "python" ]]; then # second word
