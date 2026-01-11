@@ -25,8 +25,15 @@ rpm-install:
 rpm-uninstall:
 	rpm -e siakhooi-devy
 
+# use inside wsl
 docker-build-rpm:
 	docker run --rm -v $$(pwd):/workspace siakhooi/devcontainer:bash-rpm-0.1.0 scripts/build-rpms.sh
 docker-build-deb:
 	docker run --rm -v $$(pwd):/workspace siakhooi/devcontainer:bash-deb-0.1.0 scripts/build-deb.sh
 all: clean set-version docker-build-deb docker-build-rpm
+# use inside container
+podman-build-rpm:
+	podman run --rm -v $$(pwd):/workspace docker.io/siakhooi/devcontainer:bash-rpm-0.1.0 scripts/build-rpms.sh
+podman-build-deb:
+	podman run --rm -v $$(pwd):/workspace docker.io/siakhooi/devcontainer:bash-deb-0.1.0 scripts/build-deb.sh
+all-in-podman: clean set-version podman-build-deb podman-build-rpm

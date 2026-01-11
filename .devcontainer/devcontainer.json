@@ -1,0 +1,19 @@
+{
+	"name": "Debian Development Dev Container",
+	"image": "siakhooi/devcontainer:bash-deb-0.1.0",
+	"remoteUser": "maui",
+	"containerUser": "maui",
+	"updateRemoteUserUID": true,
+	"features": {},
+	"customizations": {
+		"vscode": {
+			"extensions": []
+		}
+	},
+	"mounts": [
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/maui/.ssh,type=bind,consistency=cached"
+	],
+	"remoteEnv": {
+		"LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+	}
+}
