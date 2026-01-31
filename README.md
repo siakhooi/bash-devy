@@ -30,6 +30,7 @@ sudo yum install siakhooi-devy
 - `git-log`
 - `git-reset`
 - `mvn-deps`
+- `mvn-install`
 - `mvn-with-settings`
 
 ## External Third party Required

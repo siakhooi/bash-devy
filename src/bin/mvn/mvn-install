@@ -1,0 +1,34 @@
+#!/bin/bash
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] group_id artifact_id version jar_file"
+}
+while getopts "h" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+if [[ $# -ne 4 ]]; then
+	usage
+	exit 0
+fi
+
+readonly group_id=$1
+readonly artifact_id=$2
+readonly version=$3
+readonly jar_file=$4
+
+mvn install:install-file \
+	-Dfile="$jar_file" \
+	-DgroupId="$group_id" \
+	-DartifactId="$artifact_id" \
+	-Dversion="$version" \
+	-Dpackaging=jar

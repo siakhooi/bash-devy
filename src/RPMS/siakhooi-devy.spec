@@ -30,9 +30,13 @@ dev scripts for devcontainers/wsl
 %{_bindir}/git-log
 %{_bindir}/git-reset
 %{_bindir}/mvn-deps
+%{_bindir}/mvn-install
 %{_bindir}/mvn-with-settings
 
 %changelog
+* Fri Jan 30 2026 Siak Hooi <siakhooi@gmail.com> - 0.14.0
+- update devy-check-binaries with podman version checks, add mvn-install
+
 * Sat Jan 10 2026 Siak Hooi <siakhooi@gmail.com> - 0.13.0
 - update devy-check-binaries with python, spring, go, docker, java, helm, mvn, gradle version checks
 
