@@ -1,0 +1,62 @@
+#!/bin/bash
+
+usage() {
+	echo "Usage: $(basename "$0") [-h] [-s true|false] [-u true|false] files..."
+	echo "     : do git update-index on specified files"
+	echo " -s true|false : set skip-worktree bit"
+	echo " -u true|false : set assume-unchanged bit"
+}
+action=
+while getopts "hs:u:" arg; do
+	case $arg in
+	h)
+		usage
+		exit 0
+		;;
+	s)
+		if [[ -n $action ]]; then
+			echo.error "only one of -s or -u can be specified"
+			exit 1
+		fi
+		if [[ "$OPTARG" != "true" && "$OPTARG" != "false" ]]; then
+			echo.error "-s requires true or false"
+			exit 1
+		fi
+		if [[ "$OPTARG" == "true" ]]; then
+			action="--skip-worktree"
+		else
+			action="--no-skip-worktree"
+		fi
+		;;
+	u)
+		if [[ -n $action ]]; then
+			echo.error "only one of -s or -u can be specified"
+			exit 1
+		fi
+		if [[ "$OPTARG" != "true" && "$OPTARG" != "false" ]]; then
+			echo.error "-u requires true or false"
+			exit 1
+		fi
+		if [[ "$OPTARG" == "true" ]]; then
+			action="--assume-unchanged"
+		else
+			action="--no-assume-unchanged"
+		fi
+		;;
+	*)
+		usage
+		exit 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+
+if [[ -z $action ]]; then
+	echo.error "one of -s or -u must be specified"
+	exit 1
+fi
+if [[ $# -eq 0 ]]; then
+	echo.error "at least one file must be specified"
+	exit 1
+fi
+git update-index "$action" "$@"

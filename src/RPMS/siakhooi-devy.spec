@@ -1,5 +1,5 @@
 Name:           siakhooi-devy
-Version:        0.14.0
+Version:        0.15.0
 Release:        1%{?dist}
 Summary:        dev scripts for devcontainers/wsl
 
@@ -32,8 +32,12 @@ dev scripts for devcontainers/wsl
 %{_bindir}/mvn-deps
 %{_bindir}/mvn-install
 %{_bindir}/mvn-with-settings
+%{_bindir}/git-update-index
 
 %changelog
+* Sat Jan 31 2026 Siak Hooi <siakhooi@gmail.com> - 0.15.0
+- add git-update-index
+
 * Fri Jan 30 2026 Siak Hooi <siakhooi@gmail.com> - 0.14.0
 - update devy-check-binaries with podman version checks, add mvn-install
 

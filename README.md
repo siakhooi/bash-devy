@@ -29,6 +29,7 @@ sudo yum install siakhooi-devy
 - `git-get`
 - `git-log`
 - `git-reset`
+- `git-update-index`
 - `mvn-deps`
 - `mvn-install`
 - `mvn-with-settings`
