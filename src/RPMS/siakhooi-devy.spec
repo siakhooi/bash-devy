@@ -36,7 +36,7 @@ dev scripts for devcontainers/wsl
 
 %changelog
 * Sat Jan 31 2026 Siak Hooi <siakhooi@gmail.com> - 0.15.0
-- add git-update-index
+- add git-update-index, git-commit -A repo_root [repo_path]
 
 * Fri Jan 30 2026 Siak Hooi <siakhooi@gmail.com> - 0.14.0
 - update devy-check-binaries with podman version checks, add mvn-install

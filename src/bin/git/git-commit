@@ -1,38 +1,42 @@
 #!/bin/bash
 
 usage() {
-  echo "Usage: $(basename "$0") [-h] [-a] [-n] [-e] [-r]"
+  echo "Usage: $(basename "$0") [-h] [-a] [-n] [-e] [-r] [-A repo_root [repo_path]]"
   echo "     : do git commit with message from git-commit.yaml"
   echo " -a  : do git commit --amend"
   echo " -n  : do git commit --amend --no-edit"
   echo " -e  : edit git-commit.yaml"
   echo " -r  : git push for review"
+  echo " -A repo_root [repo_path]: auto commit, repo_path default to ."
 }
 action=commit
 message=Y
 options=()
-while getopts "heran" arg; do
+while getopts "heranA" arg; do
   case $arg in
-    h)
-      usage
-      exit 0
+  h)
+    usage
+    exit 0
     ;;
-    e)
-      action=edit
+  e)
+    action=edit
     ;;
-    r)
-      action=review
+  r)
+    action=review
     ;;
-    a)
-      options+=(--amend)
+  a)
+    options+=(--amend)
     ;;
-    n)
-      message=N
-      options+=(--amend --no-edit)
+  n)
+    message=N
+    options+=(--amend --no-edit)
     ;;
-    *)
-      usage
-      exit 1
+  A)
+    action=autocommit
+    ;;
+  *)
+    usage
+    exit 1
     ;;
   esac
 done
@@ -48,7 +52,7 @@ fi
 
 if [[ "$action" == "edit" ]]; then
   if [[ ! -f "$git_commit_config" ]]; then
-    echo "message: <message>" > "$git_commit_config"
+    echo "message: <message>" >"$git_commit_config"
   fi
   $EDITOR "$git_commit_config"
   exit $?
@@ -80,5 +84,28 @@ if [[ $action == "review" ]]; then
   (
     set -x
     git push origin "HEAD:refs/for/$git_branch"
+  )
+
+fi
+
+if [[ $action == "autocommit" ]]; then
+  if [[ $# -ne 1 ]] && [[ $# -ne 2 ]]; then
+    echo.error "Usage: $(basename "$0") -A repo_root [repo_path]"
+    exit 1
+  fi
+  repo_root=$1
+  repo_path=${2:-.}
+  if [[ ! -d "$repo_root" ]]; then
+    echo.error "repo_root $repo_root not found"
+    exit 1
+  fi
+  set -e
+  (
+    cd "$repo_root" || {
+      echo.error "not able to enter repo_root $repo_root"
+      exit 1
+    }
+    git add "$repo_path"
+    git commit -m "Auto Commit- $(y2s)"
   )
 fi
